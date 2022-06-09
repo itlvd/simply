@@ -1,11 +1,6 @@
 # Settings
 
-> You don't have to add all the Simply configurations. only the ones you need
-
-- [Social Media](#social-media)
-- [Search](#search)
-- [Logo Light / Dark Mode](#logo-light--dark-mode)
-- [Comments](#comments)
+You don't have to add all the Simply configurations. only the ones you need
 
 ## Social Media
 
@@ -157,9 +152,7 @@ It is not necessary to add all the icons. Only the icons you need.
 
 > The default search engine will only search the titles of the post
 
-**Setup a Custom integration**
-
-1. Go in your Ghost's `dashboard -> Integrations -> Add custom integration`
+1. Go in your Ghost's `Dashboard -> Integrations -> Add custom integration`
 2. Set a name: Choose a favorite name
 3. Get the **Content API Key** and replace the demo **key**  with this one
 4. Get the **Api URL**  and replace in **url**
@@ -171,43 +164,90 @@ It is not necessary to add all the icons. Only the icons you need.
 ```html
 <script>
   var searchSettings = {
-    key: "ADD_YOUR_CONTENT_API_KEY",
-    url: "API_URL",
-  };
-</script>
-```
-
-OR - Adding parameters to the search
-
-```html
-<script>
-  var searchSettings = {
-    key: "ADD_YOUR_CONTENT_API_KEY",
-    url: "API_URL",
-    /* This is optional */
-    options: {
-      keys: ["title"],
-      limit: 10,
-    },
-    /* This is optional to perform filtering of the ghost api */
-    api: {
-      resource: "posts",
-      parameters: {
-        limit: "all",
-        fields: ["title", "slug"],
-        filter: "",
-        include: "",
-        order: "",
-        formats: "",
-      },
-    },
+    key: "ADD_YOUR_CONTENT_API_KEY"
   };
 </script>
 ```
 
 The search engine that includes Simply is very powerful, supports almost all languages and you can customize to your liking.
 
-Read more about the search engine [Read More](https://github.com/HauntedThemes/ghost-search)
+Read more about the search engine [Read More](https://github.com/gmfmi/searchinGhost)
+
+### Language settings
+
+If your blog uses a latin alphabet language (e.g. English, French, Spanish) or a Northern/Eastern European one (e.g. German, Swedish, Hungarian, Slovenian, Estonian) the default configuration will work just fine. In the other cases, find the appropriate `indexOptions` value and add it to your main SearchinGhost configuration.
+
+To create your own specific settings, refer to the
+[FlexSearch README](https://github.com/nextapps-de/flexsearch/tree/0.6.22#add-custom-matcher) and
+[these](https://github.com/nextapps-de/flexsearch/issues/51)
+[three](https://github.com/nextapps-de/flexsearch/issues/51)
+[issues](https://github.com/nextapps-de/flexsearch/issues/73).
+
+This is a copy of the documentation for the library  [Read More](https://github.com/gmfmi/searchinGhost/blob/master/README.md#language-settings).
+
+#### Arabic
+
+```js
+indexOptions: {
+    encode: false,
+    rtl: true,
+    split: /\s+/
+}
+```
+
+#### Chinese, Korean, Japanese
+
+```js
+indexOptions: {
+    encode: false,
+    tokenize: function(str){
+        return str.replace(/[\x00-\x7F]/g, "").split("");
+    }
+}
+```
+
+#### Cyrillic, Indian, Sinhala
+
+This option can be used by any space-separated word languages that uses complex characters.
+
+```js
+indexOptions: {
+    encode: false,
+    split: /\s+/
+}
+```
+
+#### Mixed language types
+
+If you need to use multiple language types (e.g. Cyrillic/English or Indian/Spanish), use the dedicated
+configuration below. I know, it can look scary at first look but just copy/paste it and trust me.
+
+```js
+indexOptions: {
+    split: /\s+/,
+    encode: function(str) {
+        var regexp_replacements = {
+            "a": /[àáâãäå]/g,
+            "e": /[èéêë]/g,
+            "i": /[ìíîï]/g,
+            "o": /[òóôõöő]/g,
+            "u": /[ùúûüű]/g,
+            "y": /[ýŷÿ]/g,
+            "n": /ñ/g,
+            "c": /[ç]/g,
+            "s": /ß/g,
+            " ": /[-/]/g,
+            "": /['!"#$%&\\()\*+,-./:;<=>?@[\]^_`{|}~]/g,
+            " ": /\s+/g,
+        }
+        str = str.toLowerCase();
+        for (var key of Object.keys(regexp_replacements)) {
+            str = str.replace(regexp_replacements[key], key);
+        }
+        return str === " " ? "" : str;
+    }
+}
+```
 
 ## Logo Light / Dark Mode
 
@@ -215,8 +255,8 @@ Read more about the search engine [Read More](https://github.com/HauntedThemes/g
 - Edit the file `./partials/layout/header.hbs` and uncomment this line
 
 ```handlebars
-<img src="{{img_url @site.logo size="m"}}" class="header-logo-img max-h-8 logo-default" alt="{{@site.title}}" width="115" height="30"/>
-{{!-- <img src="{{asset "images/logo-dark-mode.png"}}" class="header-logo-img max-h-8 hidden logo-dark-mode" alt="" width="115" height="30"/> --}}
+<img src="{{img_url @site.logo size="m"}}" class="header-logo-img max-h-9 logo-default" alt="{{@site.title}}" width="115" height="30"/>
+{{!-- <img src="{{asset "images/logo-dark-mode.png"}}" class="header-logo-img max-h-9 hidden logo-dark-mode" alt="" width="115" height="30"/> --}}
 ```
 
 - Add the entyles in ➡️ `Dashboard -> Code injection -> Site Header`
@@ -231,25 +271,57 @@ Read more about the search engine [Read More](https://github.com/HauntedThemes/g
 </style>
 ```
 
+## Color Scheme
+
+Choose your color scheme, by default it will use your browser theme, you can choose to start in dark mode or light mode.
+
+![Color Scheme](https://user-images.githubusercontent.com/10253167/161593592-a4bee35b-aabe-401e-abd7-82f1cccbed13.jpg)
+
+## Pagination
+
+Simply comes by default with infinite pagination but will stop only on the second page and display a button to Load More. If you don't like infinite pagination choose numeric pagination.
+
+![simply pagination](https://user-images.githubusercontent.com/10253167/161633756-1fd35f08-e2c2-4b45-8aad-4b1b31708c75.jpg)
+
+## HomePage
+
+You have 4 options to customize your home page.
+
+1. **Featured** - The last featured article will be called up and displayed throughout the length of the screen.
+
+2. **Featured slider** - The last 3 featured articles are called and will be displayed throughout the page.
+
+3. **Publication cover**
+
+![Publication Cover](https://user-images.githubusercontent.com/10253167/161642212-04aedd33-7a48-4ff6-8043-4f9037363aa2.png)
+
+## Post Font
+
+Choose font-sans or font-serif
+
+![post-font](https://user-images.githubusercontent.com/10253167/161645018-a33d4deb-cd31-443b-bc8e-6eaa73a2839e.jpg)
+
+## Newsletter
+
+The form is located at the bottom of the article, you can change the text, enable or disable the form
+
+![newsletter](https://user-images.githubusercontent.com/10253167/161645228-32f3e1e8-5d25-440e-8b99-5003e727ce39.jpg)
+
 ## Comments
 
 If you need a quick way to make fully functional comments Simply has everything ready for you.
 
 ### Disqus Comments
 
-![Disqus Comments for Ghost](https://user-images.githubusercontent.com/10253167/105515136-54143580-5ca2-11eb-90fe-36ec862d7ea7.png)
+![Disqus Comments for Ghost](https://user-images.githubusercontent.com/10253167/161466994-837637fd-edf7-43d5-a757-bf14d380fa87.jpeg)
 
 [Disqus](https://disqus.com/) allows you to embed comment threads within Ghost posts and pages, including additional functionality like upvoting and adding Emoji reactions.
 
 — First, you will need to get your account `disqusShortName`
 
-➡️ `Dashboard -> Code injection -> Site Footer`
+➡️ `Dashboard -> Site design -> Post -> Comments disqus short name`
 
-```html
-<script>
-  var disqusShortName = "YOUR_DISQUS_SHORTCUT_HERE";
-</script>
-```
+![Disqus Comments simply](https://user-images.githubusercontent.com/10253167/161466531-c08a9c6f-c589-4eff-ae42-4f11066b014b.jpg)
 
 ---
 
@@ -261,18 +333,18 @@ To have the [Facebook comments](https://developers.facebook.com/docs/plugins/com
 
 Inside the file you have to delete all the content and add all the code that I leave below.
 
-```hbs
-<div id="post-comments" class="post-comments js-comments bg-gray-200 pt-4 pb-8">
-    <div class="mx-auto px-4 max-w-1000">
-        <div class="py-4 px-5 bg-white shadow rounded-md border border-gray-100">
-             <div class="fb-comments" data-href="{{url absolute="true"}}" data-width="100%" data-numposts="5"></div>
-        </div>
+```handlebars
+<div id="post-comments" class="post-comments bg-gray-150 pt-8 pb-8">
+  <div class="mx-auto px-4 max-w-5xl">
+    <div class="py-4 px-5">
+      <div class="fb-comments" data-href="{{url absolute="true"}}" data-width="100%" data-numposts="5"></div>
     </div>
+  </div>
 </div>
 
 {{#contentFor "scripts"}}
 <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0" nonce="Jb8hW4cJ"></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v13.0" nonce="Jb8hW4cJ"></script>
 {{/contentFor}}
 ```
 
@@ -290,22 +362,20 @@ Make sure to replace `YOUR_WEBSITE_ID` in the code with your website ID.
 
 Inside the file you have to delete all the content and add all the code that I leave below.
 
-```hbs
-<div id="post-comments" class="post-comments js-comments bg-gray-200 pt-8 pb-8">
-    <div class="mx-auto px-4 max-w-4xl">
-        <div class="py-4">
-            <div id="hyvor-talk-view"></div>
-        </div>
-    </div>
+```handlebars
+<div id="post-comments" class="post-comments pt-8 pb-8">
+  <div class="mx-auto px-4 max-w-5xl">
+    <div id="hyvor-talk-view"></div>
+  </div>
 </div>
 
 {{#contentFor "scripts"}}
 <script type="text/javascript">
-    var HYVOR_TALK_WEBSITE = YOUR_WEBSITE_ID; // DO NOT CHANGE THIS
-    var HYVOR_TALK_CONFIG = {
-        url: "{{url absolute="true"}}",
-        id: "ghost-{{comment_id}}"
-    };
+  var HYVOR_TALK_WEBSITE = YOUR_WEBSITE_ID; // DO NOT CHANGE THIS
+  var HYVOR_TALK_CONFIG = {
+    url: "{{url absolute="true"}}",
+    id: "ghost-{{comment_id}}"
+  };
 </script>
 <script async type="text/javascript" src="//talk.hyvor.com/web-api/embed"></script>
 {{/contentFor}}
