@@ -45,7 +45,9 @@
     <link rel="stylesheet" type="text/css" href="{{asset "styles/main.css"}}"/>
     {{!-- <style>{{> "main-styles"}}</style> --}}
     
-    {{^if @member}}
+    {{#if @member}}
+    
+    {{else}}
         <!-- Global site tag (gtag.js) - Google Analytics -->
            <script async src="https://www.googletagmanager.com/gtag/js?id=G-26D5PQGM9X"></script>
         <script>
