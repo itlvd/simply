@@ -44,6 +44,17 @@
     {{!-- Styles --}}
     <link rel="stylesheet" type="text/css" href="{{asset "styles/main.css"}}"/>
     {{!-- <style>{{> "main-styles"}}</style> --}}
+    
+    {{^if @member}}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+           <script async src="https://www.googletagmanager.com/gtag/js?id=G-26D5PQGM9X"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-26D5PQGM9X');
+        </script>
+    {{/if}}
 
     {{!-- Ghost outputs important style and meta data with this tag --}}
     {{ghost_head}}
