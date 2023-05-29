@@ -3,7 +3,7 @@
     <img src="https://user-images.githubusercontent.com/10253167/103450308-a2757c00-4c82-11eb-8bc3-29b09520fc58.png" width="150px" alt="Simply free theme for Ghost"  />
   </a>
 </p>
-
+ 
 <p align="center">
     <a href="https://godofredo.ninja/ghost-theme/simply/introduction">Docs</a>
     ·
