@@ -6,7 +6,7 @@
  
 <p align="center">
     <a href="https://godofredo.ninja/ghost-theme/simply/introduction">Docs</a>
-    ·
+    · 
     <a href="https://godofredo.ninja/ghost-theme/showcase/">Showcase</a> 
     ·
     <a href="https://github.com/godofredoninja/simply/graphs/contributors">Contributing</a>
